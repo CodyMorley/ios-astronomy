@@ -92,10 +92,17 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
     
     // MARK: - Methods -
     private func loadImage(forCell cell: ImageCollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        // let photoReference = photoReferences[indexPath.item]
-        
-        // TODO: Implement image loading here
+        let photoReference = photoReferences[indexPath.item]
+        //Implement image loading here
+        DispatchQueue.main.async{
+            do {
+                let imageURL = photoReference.imageURL
+                let image = try UIImage(contentsOfFile: String(contentsOf: imageURL))
+                cell.imageView.image = image
+            } catch {
+                NSLog("Error loading image from API: \(error)")
+            }
+        }
     }
     
     
