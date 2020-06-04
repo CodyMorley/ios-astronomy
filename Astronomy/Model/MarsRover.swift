@@ -9,6 +9,20 @@
 import Foundation
 
 struct MarsRover: Codable {
+    //MARK: - Types -
+    enum CodingKeys: String, CodingKey {
+        case name
+        case launchDate
+        case landingDate
+        case status
+        case maxSol
+        case maxDate
+        case numberOfPhotos = "totalPhotos"
+        case solDescriptions = "photos"
+    }
+    
+    
+    //MARK: - Properties -
     let name: String
     
     let launchDate: Date
@@ -26,17 +40,7 @@ struct MarsRover: Codable {
     
     let solDescriptions: [SolDescription]
     
-    enum CodingKeys: String, CodingKey {
-        case name
-        case launchDate
-        case landingDate
-        case status
-        case maxSol
-        case maxDate
-        case numberOfPhotos = "totalPhotos"
-        case solDescriptions = "photos"
-    }
-    
+    ///Static Properties
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")

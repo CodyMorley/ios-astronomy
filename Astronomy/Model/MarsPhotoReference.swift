@@ -9,13 +9,7 @@
 import Foundation
 
 struct MarsPhotoReference: Codable {
-    let id: Int
-    let sol: Int
-    let camera: Camera
-    let earthDate: Date
-    
-    let imageURL: URL
-    
+    //MARK: - Types -
     enum CodingKeys: String, CodingKey {
         case id
         case sol
@@ -23,7 +17,17 @@ struct MarsPhotoReference: Codable {
         case earthDate
         case imageURL = "imgSrc"
     }
-
+    
+    
+    //MARK: - Properties -
+    let id: Int
+    let sol: Int
+    let camera: Camera
+    let earthDate: Date
+    
+    let imageURL: URL
+    
+    ///Static Properties 
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")

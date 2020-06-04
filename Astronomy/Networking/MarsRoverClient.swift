@@ -9,7 +9,12 @@
 import Foundation
 
 class MarsRoverClient {
+    //MARK: - Properties -
+    private let baseURL = URL(string: "https://api.nasa.gov/mars-photos/api/v1")!
+    private let apiKey = "qzGsj0zsKk6CA9JZP1UjAbpQHabBfaPg2M5dGMB7"
     
+    
+    //MARK: - Actions -
     func fetchMarsRover(named name: String,
                         using session: URLSession = URLSession.shared,
                         completion: @escaping (MarsRover?, Error?) -> Void) {
@@ -39,8 +44,8 @@ class MarsRoverClient {
         }
     }
     
-    // MARK: - Private
     
+    // MARK: - Private Methods -
     private func fetch<T: Codable>(from url: URL,
                            using session: URLSession = URLSession.shared,
                            completion: @escaping (T?, Error?) -> Void) {
@@ -65,9 +70,6 @@ class MarsRoverClient {
         }.resume()
     }
     
-    private let baseURL = URL(string: "https://api.nasa.gov/mars-photos/api/v1")!
-    private let apiKey = "qzGsj0zsKk6CA9JZP1UjAbpQHabBfaPg2M5dGMB7"
-
     private func url(forInfoForRover roverName: String) -> URL {
         var url = baseURL
         url.appendPathComponent("manifests")
@@ -87,4 +89,6 @@ class MarsRoverClient {
                                     URLQueryItem(name: "api_key", value: apiKey)]
         return urlComponents.url!
     }
+    
+    
 }
