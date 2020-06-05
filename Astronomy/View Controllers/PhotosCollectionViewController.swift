@@ -36,7 +36,7 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
             DispatchQueue.main.async { self.collectionView?.reloadData() }
         }
     }
-    ///Outlets
+    
     @IBOutlet var collectionView: UICollectionView!
     
     
@@ -97,9 +97,7 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
     // MARK: - Methods -
     private func loadImage(forCell cell: ImageCollectionViewCell, forItemAt indexPath: IndexPath) {
         let photoReference = photoReferences[indexPath.item]
-        //Implement image loading here
         
-        //check for image in cache, set cell image if it's there
         if let cachedData = photoCache.value(for: photoReference.id) {
             cell.imageView.image = UIImage(data: cachedData)
             return

@@ -10,9 +10,8 @@ import UIKit
 
 class ImageCollectionViewCell: UICollectionViewCell {
     // MARK: Properties
-    
-    ///IBOutlets
     @IBOutlet var imageView: UIImageView!
+    
     
     //MARK: Methods
     override func prepareForReuse() {

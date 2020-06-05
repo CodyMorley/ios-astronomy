@@ -21,25 +21,19 @@ struct MarsRover: Codable {
         case solDescriptions = "photos"
     }
     
-    
-    //MARK: - Properties -
-    let name: String
-    
-    let launchDate: Date
-    let landingDate: Date
-    
     enum Status: String, Codable {
         case active, complete
     }
-    let status: Status
     
+    //MARK: - Properties -
+    let name: String
+    let launchDate: Date
+    let landingDate: Date
+    let status: Status
     let maxSol: Int
     let maxDate: Date
-    
     let numberOfPhotos: Int
-    
     let solDescriptions: [SolDescription]
-    
     ///Static Properties
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -48,7 +42,6 @@ struct MarsRover: Codable {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
-    
     static var jsonDecoder: JSONDecoder {
         let result = JSONDecoder()
         result.keyDecodingStrategy = .convertFromSnakeCase

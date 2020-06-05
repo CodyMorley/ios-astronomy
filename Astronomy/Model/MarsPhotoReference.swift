@@ -24,9 +24,7 @@ struct MarsPhotoReference: Codable {
     let sol: Int
     let camera: Camera
     let earthDate: Date
-    
     let imageURL: URL
-    
     ///Static Properties 
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -35,7 +33,6 @@ struct MarsPhotoReference: Codable {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
-    
     static var jsonDecoder: JSONDecoder {
         let result = JSONDecoder()
         result.keyDecodingStrategy = .convertFromSnakeCase
