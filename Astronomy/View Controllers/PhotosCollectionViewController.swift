@@ -12,13 +12,14 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
     
     //MARK: - Properties -
     private let client = MarsRoverClient()
-    
+    private let photoCache = Cache<Int, Data>()
+    private var photoFetchQueue = OperationQueue()
+    private var operations: [Int: Operation] = [:]
     private var roverInfo: MarsRover? {
         didSet {
             solDescription = roverInfo?.solDescriptions[3]
         }
     }
-    
     private var solDescription: SolDescription? {
         didSet {
             if let rover = roverInfo,
@@ -30,13 +31,12 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
             }
         }
     }
-    
     private var photoReferences = [MarsPhotoReference]() {
         didSet {
             DispatchQueue.main.async { self.collectionView?.reloadData() }
         }
     }
-    
+    ///Outlets
     @IBOutlet var collectionView: UICollectionView!
     
     
@@ -94,15 +94,38 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
     private func loadImage(forCell cell: ImageCollectionViewCell, forItemAt indexPath: IndexPath) {
         let photoReference = photoReferences[indexPath.item]
         //Implement image loading here
-        DispatchQueue.main.async{
-            do {
-                let imageURL = photoReference.imageURL
-                let image = try UIImage(contentsOfFile: String(contentsOf: imageURL))
-                cell.imageView.image = image
-            } catch {
-                NSLog("Error loading image from API: \(error)")
+        
+        //check for image in cache, set cell image if it's there
+        if let cachedData = photoCache.value(for: photoReference.id) {
+            cell.imageView.image = UIImage(data: cachedData)
+            return
+        }
+        
+        let fetchPhotos = FetchPhotoOperation(photoReference: photoReference)
+        let cachePhotos = BlockOperation {
+            if let fetchedPhotos = fetchPhotos.imageData {
+                self.photoCache.cache(for: photoReference.id, value: fetchedPhotos)
             }
         }
+        let completePhotoOperations = BlockOperation {
+            if let currentIndex = self.collectionView.indexPath(for: cell),
+                currentIndex != indexPath {
+                NSLog("Finished image after cell had passed in view.")
+                return
+            }
+            if let fetchedPhotos = fetchPhotos.imageData {
+                cell.imageView.image = UIImage(data: fetchedPhotos)
+            }
+        }
+        
+        cachePhotos.addDependency(fetchPhotos)
+        completePhotoOperations.addDependency(fetchPhotos)
+        
+        photoFetchQueue.addOperations([fetchPhotos, cachePhotos, completePhotoOperations], waitUntilFinished: false)
+        
+        operations[photoReference.id] = fetchPhotos
+        
+        
     }
     
     
