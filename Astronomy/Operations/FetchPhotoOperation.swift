@@ -48,5 +48,6 @@ class FetchPhotoOperation: ConcurrentOperation {
     override func cancel() {
         photoTask?.cancel()
         super.cancel()
+        print("Canceled operations for photo fetch.")
     }
 }
