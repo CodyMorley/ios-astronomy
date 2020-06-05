@@ -117,15 +117,11 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
                 cell.imageView.image = UIImage(data: fetchedPhotos)
             }
         }
-        
         cachePhotos.addDependency(fetchPhotos)
         completePhotoOperations.addDependency(fetchPhotos)
-        
-        photoFetchQueue.addOperations([fetchPhotos, cachePhotos, completePhotoOperations], waitUntilFinished: false)
-        
+        photoFetchQueue.addOperations([fetchPhotos, cachePhotos], waitUntilFinished: false)
+        OperationQueue.main.addOperation(completePhotoOperations)
         operations[photoReference.id] = fetchPhotos
-        
-        
     }
     
     
