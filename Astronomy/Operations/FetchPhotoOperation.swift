@@ -50,6 +50,4 @@ class FetchPhotoOperation: ConcurrentOperation {
         super.cancel()
         print("Canceled operations for photo fetch.")
     }
-    
-    
 }

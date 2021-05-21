@@ -23,6 +23,4 @@ class Cache<Key: Hashable, Value> {
             storedCache[key]
         }
     }
-    
-    
 }
